@@ -1,24 +1,62 @@
-# README
+# Test task implementation
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Functional requirements:
+> We have forum users and their comments. We need to design an API that allows moderators to get a list of users and their comments.
 
-Things you may want to cover:
+API was implemented with Grape and Swagger.
 
-* Ruby version
+Swagger UI:  
+http://localhost:3000/api/swagger
 
-* System dependencies
+Swagger JSON:
+```
+curl -s http://localhost:3000/api/v1/swagger_doc.json | jq '.'
+```
 
-* Configuration
+## How to launch project with Docker Compose
+Install Docker Compose (https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository).
+Then run
+```
+# Launching in interactive mode
+docker-compose up
+```
+Or
+```
+# Launching in background mode
+docker-compose up -d
+```
 
-* Database creation
+## How to populate DB with sample data
+```
+docker-compose up -d
+docker-compose exec web rails db:seed
+```
 
-* Database initialization
+## How to run tests with Docker Compose
+```
+docker-compose up -d
+docker-compose exec web rspec
+```
 
-* How to run the test suite
+## How to run the linter with Docker Compose
+```
+docker-compose up -d
+docker-compose exec web rubocop
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+## Dockerfiles
+`compose.yml` and `Dockerfile.dev` are used for local development  
 
-* Deployment instructions
+`Dockerfile` is used for deployment to production
 
-* ...
+## TODO (didn't implement this due to time limitation):
+- Add authentication (for example JWT)
+- Implement role-based access control (only moderators should access these endpoints)
+- Add `count` and `total_pages` to API responses
+- Add user activity statistics (comment count, last activity)
+- Add comment status (normal, deleted)
+- Add `/api/v1/comments` API endpoint to select comments from a few authors
+- Add filters for users (by username, email, registration date)
+- Add search for comments (by content, date range)
+- Add API endpoints for comment moderation
+- Add rate limiting
